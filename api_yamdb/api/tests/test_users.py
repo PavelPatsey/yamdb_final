@@ -336,7 +336,7 @@ class UsersViewsTest(TestCase):
         self.assertEqual(response.json(), test_json)
 
     @unittest.expectedFailure
-    def test_patch_users_me_role_by_user_expectedFailure(self):
+    def test_patch_users_me_role_by_user_expectedfailure(self):
         """Изменение своей роли юзером"""
         user = User.objects.create_user(
             username="testusername",

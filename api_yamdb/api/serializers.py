@@ -77,10 +77,9 @@ class ReviewsSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_title(self):
-        title = get_object_or_404(
+        return get_object_or_404(
             Title, id=self.context.get("view").kwargs.get("title_id")
         )
-        return title
 
     def validate(self, attrs):
         if (
