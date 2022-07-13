@@ -8,7 +8,7 @@ SECRET_KEY = "p&l%385148kslhtyn^##a1)ilz@4zqj=rq&agdol^##zgl9(vs"
 
 DEBUG = False
 
-ALLOWED_HOSTS = ["*", "testserver"]
+ALLOWED_HOSTS = ["*", "testserver", "51.250.109.204"]
 
 ADMIN_MAIL = "from@example.com"
 
