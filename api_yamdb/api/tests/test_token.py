@@ -6,7 +6,6 @@ from django.shortcuts import get_object_or_404
 from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
-
 from users.models import User
 
 
