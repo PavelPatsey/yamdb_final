@@ -3,20 +3,13 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
-from django_filters.rest_framework import (
-    CharFilter,
-    DjangoFilterBackend,
-    FilterSet,
-    NumberFilter,
-)
+from django_filters.rest_framework import (CharFilter, DjangoFilterBackend,
+                                           FilterSet, NumberFilter)
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import (
-    AllowAny,
-    IsAuthenticated,
-    IsAuthenticatedOrReadOnly,
-)
+from rest_framework.permissions import (AllowAny, IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -27,18 +20,11 @@ from users.models import User
 
 from .mixins import CreateListDestroyViewSet
 from .permissions import IsAdminOrReadOnly, IsAuthorOrStaff, UserPermission
-from .serializers import (
-    CategorySerializer,
-    CommentsSerializer,
-    CustomTokenObtainSerializer,
-    GenreSerializer,
-    ReviewsSerializer,
-    SignUpSerializer,
-    TitlePostSerializer,
-    TitleSerializer,
-    UserMeSerializer,
-    UserSerializer,
-)
+from .serializers import (CategorySerializer, CommentsSerializer,
+                          CustomTokenObtainSerializer, GenreSerializer,
+                          ReviewsSerializer, SignUpSerializer,
+                          TitlePostSerializer, TitleSerializer,
+                          UserMeSerializer, UserSerializer)
 
 
 class TitleFilter(FilterSet):
