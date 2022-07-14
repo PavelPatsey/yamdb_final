@@ -8,8 +8,6 @@ RUN pip3 install -r /app/requirements.txt --no-cache-dir
 
 COPY ./ /app
 
-COPY ./redoc.yaml /app/static/
-
 WORKDIR /app
 
 CMD ["gunicorn", "api_yamdb.wsgi:application", "--bind", "0:8000"]
