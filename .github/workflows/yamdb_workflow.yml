@@ -78,4 +78,4 @@ jobs:
         with:
           context: api_yamdb/
           push: true
-          tags: pavelpatsey/api_yamdb_web:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/api_yamdb_web:latest
