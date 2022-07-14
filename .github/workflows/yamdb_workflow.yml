@@ -77,4 +77,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ppavelpatsey/api_yamdb_web:latest
+          tags: pavelpatsey/api_yamdb_web:latest
