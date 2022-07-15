@@ -63,69 +63,74 @@ YaMDB отправляет письмо с кодом подтверждения
 
 **Администратор Django** — те же права, что и у роли Администратор.
 
-## Запуск проекта в Докере:
+## Подготовка и запуск проекта
+### Склонировать репозиторий на локальную машину:
+```
+git clone https://github.com/NIK-TIGER-BILL/yamdb_final
+```
+## Для работы с удаленным сервером (на ubuntu):
+* Выполните вход на свой удаленный сервер
 
-1. Сколнируйте репозиторий
-2. В каталоге /infra создайте файл .env c аналогичной структурой:
- ```
-DB_ENGINE=django.db.backends.postgresql # указываем, что работаем с postgresql
-DB_NAME=postgres # имя базы данных
-POSTGRES_USER=postgres # логин для подключения к базе данных
-POSTGRES_PASSWORD=qwerty123 # пароль для подключения к БД (установите свой)
-DB_HOST=db # название сервиса (контейнера)
-DB_PORT=5432 # порт для подключения к БД
- ```
-3. В командной строке перейдите в папку ./infra/, запустите docker-compose в фоновом режиме командой:
+* Установите docker на сервер:
 ```
-docker-compose up -d
+sudo apt install docker.io 
 ```
-4. Примените миграции:
+* Установите docker-compose на сервер:
 ```
-docker-compose exec web python manage.py migrate
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+* Локально отредактируйте файл nginx.conf и в строке server_name впишите свой IP
+* Скопируйте файлы docker-compose.yml и nginx.conf из репозитория на сервер:
+```
+scp docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yml
+scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
+```
 
-```
-5. Создайте суперпользователя:
-```
-docker-compose exec web python manage.py createsuperuser
+* Для работы с Workflow добавьте в Secrets GitHub переменные окружения для работы:
+    ```
+    DB_ENGINE=<django.db.backends.postgresql>
+    DB_NAME=<имя базы данных postgres>
+    DB_USER=<пользователь бд>
+    DB_PASSWORD=<пароль>
+    DB_HOST=<db>
+    DB_PORT=<5432>
+    
+    DOCKER_PASSWORD=<пароль от DockerHub>
+    DOCKER_USERNAME=<имя пользователя на DockerHub>
+    
+    SECRET_KEY=<секретный ключ проекта django>
 
-```
-6. Соберите статику:
-```
-docker-compose exec web python manage.py collectstatic --no-input 
+    USER=<username для подключения к серверу>
+    HOST=<IP сервера>
+    PASSPHRASE=<пароль для сервера, если он установлен>
+    SSH_KEY=<ваш SSH ключ (для получения выполните команду: cat ~/.ssh/id_rsa)>
 
-```
-Теперь проект доступен по адресу http://localhost/.
+    TELEGRAM_TO=<ID чата, в который придет сообщение, узнать свой ID можно у бота @userinfobot>
+    TELEGRAM_TOKEN=<токен вашего бота, получить этот токен можно у бота @BotFather>
+    ```
+    Workflow состоит из четырех шагов:
+     - Проверка кода на соответствие PEP8 и выполнение тестов, реализованных в проекте
+     - Сборка и публикация образа приложения на DockerHub.
+     - Автоматическое скачивание образа приложения и деплой на удаленном сервере.
+     - Отправка уведомления в телеграм-чат.  
+  
 
-Админка доступна по адресу http://localhost/admin/.
-
-При желании можно заполнить БД тестовыми данными:
-
-```
-docker-compose exec web python3 manage.py loaddata fixtures.json
-```
-Для входа в контейнер выполните команду:
-```
-sudo docker exec -it <CONTAINER ID> bash
-```
-Чтобы выйти из контейнера выполните команду:
-```
-exit
-```
-Как остановить контейнер:
-```
-docker-compose stop
-```
-Как остановить и удалить контейнер:
-```
-docker-compose down -v
-```
-Как пересобрать контейнер:
-```
-docker-compose up -d --build
-```
+* После успешного развертывания проекта на удаленном сервере, можно выполнить:
+    - Заполнения базы начальными данными (необязательно):  
+    ```
+    docker-compose exec web python manage.py loaddata fixtures.json
+    ```
+    - Создать суперпользователя Django:
+    ```
+    sudo docker-compose exec backend python manage.py createsuperuser
+    ```
+    - Проект будет доступен по вашему IP
+  
+## Проект в интернете
+Проект запущен и доступен по [адресу](http://51.250.109.204/admin/)
 ## Как пользоваться
 
-После запуска проекта, подробную инструкцию можно будет посмотреть по адресу http://localhost/redoc/
+После запуска проекта, подробную инструкцию можно будет посмотреть по [адресу](http://51.250.109.204/redoc/)
 
 В проекте реализована эмуляция почтового сервера, письма сохраняются в папке /sent_emails в головной директории проекта. Для того чтобы посмотреть содержимое писем выполните команду:
 ```
@@ -135,7 +140,3 @@ sudo docker exec -it <CONTAINER ID> bash
 ```
 tail <имя log файла>
 ```
-
-## Образ Docker
-Образ Docker находится в репзитории по адресу:
-https://hub.docker.com/repository/docker/pavelpatsey/infra_web
