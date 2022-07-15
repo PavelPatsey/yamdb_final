@@ -60,12 +60,13 @@ jobs:
         - name: executing remote ssh commands to deploy
           uses: appleboy/ssh-action@master
           with:
+            # context: api_yamdb/
             host: ${{ secrets.HOST }}
             username: ${{ secrets.USER }}
             key: ${{ secrets.SSH_KEY }}
             passphrase: ${{ secrets.PASSPHRASE }}
             script: |
-              cd infra
+              cd infra/
               sudo docker-compose stop
               sudo docker-compose rm web
               echo DB_ENGINE=${{ secrets.DB_ENGINE }} > .env
