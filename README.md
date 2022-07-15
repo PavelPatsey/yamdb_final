@@ -117,7 +117,7 @@ scp infra/nginx/default.conf <username>@<ip host>:/home/<username>/nginx/default
     ```
     - Создать суперпользователя Django:
     ```
-    sudo docker-compose exec backend python manage.py createsuperuser
+    sudo docker-compose exec web python manage.py createsuperuser
     ```
     - Проект будет доступен по IP вашего сервера.
   
