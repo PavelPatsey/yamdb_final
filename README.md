@@ -64,26 +64,21 @@ YaMDB отправляет письмо с кодом подтверждения
 **Администратор Django** — те же права, что и у роли Администратор.
 
 ## Подготовка и запуск проекта
-### Склонировать репозиторий на локальную машину:
-```
-git clone https://github.com/NIK-TIGER-BILL/yamdb_final
-```
-## Для работы с удаленным сервером (на ubuntu):
-* Выполните вход на свой удаленный сервер
+* Склонируйте репозиторий на локальную машину.
+
+### Для работы с удаленным сервером (на ubuntu):
+* Выполните вход на свой удаленный сервер.
 
 * Установите docker на сервер:
 ```
 sudo apt install docker.io 
 ```
-* Установите docker-compose на сервер:
+* Установите docker-compose на сервер. [Установка и использование Docker Compose в Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04-ru)
+* Локально отредактируйте файл infra/nginx/default.conf.conf, в строке server_name впишите свой IP
+* Скопируйте файл docker-compose.yml и папку nginx из папки infra на сервер:
 ```
-sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-```
-* Локально отредактируйте файл nginx.conf и в строке server_name впишите свой IP
-* Скопируйте файлы docker-compose.yml и nginx.conf из репозитория на сервер:
-```
-scp docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yml
-scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
+scp infra/docker-compose.yaml <username>@<ip host>:/home/<username>/docker-compose.yml
+scp infra/nginx/default.conf <username>@<ip host>:/home/<username>/nginx/default.conf
 ```
 
 * Для работы с Workflow добавьте в Secrets GitHub переменные окружения для работы:
@@ -102,8 +97,8 @@ scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
 
     USER=<username для подключения к серверу>
     HOST=<IP сервера>
-    PASSPHRASE=<пароль для сервера, если он установлен>
     SSH_KEY=<ваш SSH ключ (для получения выполните команду: cat ~/.ssh/id_rsa)>
+    PASSPHRASE=<если при создании ssh-ключа вы использовали фразу-пароль>
 
     TELEGRAM_TO=<ID чата, в который придет сообщение, узнать свой ID можно у бота @userinfobot>
     TELEGRAM_TOKEN=<токен вашего бота, получить этот токен можно у бота @BotFather>
@@ -116,7 +111,7 @@ scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
   
 
 * После успешного развертывания проекта на удаленном сервере, можно выполнить:
-    - Заполнения базы начальными данными (необязательно):  
+    - Заполнить БД начальными данными (необязательно):  
     ```
     docker-compose exec web python manage.py loaddata fixtures.json
     ```
@@ -124,17 +119,17 @@ scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
     ```
     sudo docker-compose exec backend python manage.py createsuperuser
     ```
-    - Проект будет доступен по вашему IP
+    - Проект будет доступен по IP вашего сервера.
   
 ## Проект в интернете
-Проект запущен и доступен по [адресу](http://51.250.109.204/admin/)
+Проект запущен и доступен по адресу [http://51.250.109.204/admin/](http://51.250.109.204/admin/)
 ## Как пользоваться
 
-После запуска проекта, подробную инструкцию можно будет посмотреть по [адресу](http://51.250.109.204/redoc/)
+После запуска проекта, подробную инструкцию можно будет посмотреть по адресу [http://51.250.109.204/redoc/](http://51.250.109.204/redoc/)
 
-В проекте реализована эмуляция почтового сервера, письма сохраняются в папке /sent_emails в головной директории проекта. Для того чтобы посмотреть содержимое писем выполните команду:
+В проекте реализована эмуляция почтового сервера, письма сохраняются в папке /sent_emails в головной директории проекта. Для того чтобы посмотреть содержимое писем выполните команду на сервере:
 ```
-sudo docker exec -it <CONTAINER ID> bash
+sudo docker exec -it <CONTAINER ID контейнера web> bash
 ```
 Перейдите в папку /sent_emails, с помощью команды, прочитайте содержмое лог файла:
 ```
