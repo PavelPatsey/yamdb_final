@@ -74,7 +74,7 @@ YaMDB отправляет письмо с кодом подтверждения
 sudo apt install docker.io 
 ```
 * Установите docker-compose на сервер. [Установка и использование Docker Compose в Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04-ru)
-* Локально отредактируйте файл infra/nginx/default.conf.conf, в строке server_name впишите свой IP
+* Локально отредактируйте файл infra/nginx/default.conf.conf, в строке server_name впишите IP сервера.
 * Скопируйте файл docker-compose.yml и папку nginx из папки infra на сервер:
 ```
 scp infra/docker-compose.yaml <username>@<ip host>:/home/<username>/docker-compose.yml
@@ -121,11 +121,9 @@ scp infra/nginx/default.conf <username>@<ip host>:/home/<username>/nginx/default
     ```
     - Проект будет доступен по IP вашего сервера.
   
-## Проект в интернете
-Проект запущен и доступен по адресу [http://51.250.109.204/admin/](http://51.250.109.204/admin/)
 ## Как пользоваться
 
-После запуска проекта, подробную инструкцию можно будет посмотреть по адресу [http://51.250.109.204/redoc/](http://51.250.109.204/redoc/)
+После запуска проекта, подробную инструкцию можно будет посмотреть по адресу [http://<ip адресс вашего сервера>/redoc/](http://51.250.109.204/redoc/)
 
 В проекте реализована эмуляция почтового сервера, письма сохраняются в папке /sent_emails в головной директории проекта. Для того чтобы посмотреть содержимое писем выполните команду на сервере:
 ```
